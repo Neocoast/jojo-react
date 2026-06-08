@@ -76,6 +76,7 @@ const config = [
       ],
       '@stylistic/js/quote-props': ['error', 'as-needed'],
       '@stylistic/js/quotes': ['error', 'single'],
+      '@stylistic/js/semi': ['error', 'always'],
       '@stylistic/js/space-before-function-paren': ['error', 'never'],
       'arrow-body-style': ['error', 'as-needed'],
       'arrow-parens': ['error', 'always'],
