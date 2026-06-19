@@ -1,25 +1,7 @@
 import { api } from './api';
+import type { SignupPayload, SignupResponse } from './auth.interfaces';
 
-export interface Tag {
-  id: number;
-  slug: string;
-};
-
-export interface SignupPayload {
-  email: string;
-  name: string;
-  password: string;
-  password_confirmation: string;
-  tags: string[];
-}
-
-export interface SignupResponse {
-  data: {
-    id: number;
-    email: string;
-    name: string;
-  }
-};
+export type { SignupPayload, SignupResponse };
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -47,10 +29,7 @@ export const authApi = api.injectEndpoints({
       }),
     }),
 
-    getTags: builder.query<Tag[], void>({
-      query: () => '/tags',
-    }),
   }),
 });
 
-export const { useSignupMutation, useGetTagsQuery } = authApi;
+export const { useSignupMutation } = authApi;

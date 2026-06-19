@@ -118,7 +118,7 @@
  }
 
  .bg-with-dots {
-  background-image: url(/src/assets/images/Vector.png);
+    background-image: url(/src/assets/images/Vector.png);
  }
 
  @layer base {
