@@ -1,7 +1,23 @@
 import { api } from './api';
-import type { SignupPayload, SignupResponse } from './auth.interfaces';
+import type { LoginPayload, LoginResponse, SignupPayload, SignupResponse } from './auth.interfaces';
 
 export type { SignupPayload, SignupResponse };
+
+const saveAuthTokensAndParse = async (response: Response) => {
+  const accessToken = response.headers.get('access-token');
+  const uid = response.headers.get('uid');
+  const expiry = response.headers.get('expiry');
+  const client = response.headers.get('client');
+
+  if (accessToken && uid && client && expiry) {
+    localStorage.setItem('access-token', accessToken);
+    localStorage.setItem('uid', uid);
+    localStorage.setItem('expiry', expiry);
+    localStorage.setItem('client', client);
+  }
+
+  return response.json();
+};
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,26 +26,19 @@ export const authApi = api.injectEndpoints({
         url: '/users',
         method: 'POST',
         body,
-        responseHandler: async (response) => {
-          const accessToken = response.headers.get('access-token');
-          const client = response.headers.get('client');
-          const uid = response.headers.get('uid');
-          const expiry = response.headers.get('expiry')
-
-          if (accessToken && uid && client && expiry) {
-            localStorage.setItem('access-token', accessToken);
-            localStorage.setItem('uid', uid);
-            localStorage.setItem('client', client);
-            localStorage.setItem('expiry', expiry);
-          }
-
-          return response.json();
-
-        }
+        responseHandler: saveAuthTokensAndParse,
       }),
     }),
 
+    login: builder.mutation<LoginResponse, LoginPayload>({
+      query: (body) => ({
+        url: '/users/sign_in',
+        method: 'POST',
+        body,
+        responseHandler: saveAuthTokensAndParse,
+      }),
+    }),
   }),
 });
 
-export const { useSignupMutation } = authApi;
+export const { useSignupMutation, useLoginMutation } = authApi;
