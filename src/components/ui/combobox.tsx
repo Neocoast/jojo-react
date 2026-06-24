@@ -163,7 +163,7 @@ const TagsCombobox = ({ items, onValueChange }: TagsComboboxProps) => {
               {values.map((value) => (
                 <ComboboxChip key={value}>{value}</ComboboxChip>
               ))}
-              <ComboboxChipsInput placeholder="Select tags" />
+              <ComboboxChipsInput placeholder={values.length === 0 ? 'Select tags' : ''} />
             </>
           )}
         </ComboboxValue>
