@@ -4,16 +4,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FileText } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components/ui/button';
 import { FormField } from '@/components/ui/form-field';
 import { TagsCombobox } from '@/components/ui/combobox';
 import { useSignupMutation } from '@/services/authApi';
+import { setUser } from '@/services/authSlice';
 import { useGetTagsQuery } from '@/services/tagsApi';
 import { signupSchema, type SignupFormData } from '@/validations/signup';
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [signup, { isLoading }] = useSignupMutation();
   const { data: tags = [] } = useGetTagsQuery();
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -34,7 +37,7 @@ const SignupPage = () => {
   const hasErrors = Object.keys(errors).length > 0;
 
   const onSubmitSignup = async (data: SignupFormData) => {
-    const { error } = await signup({
+    const { error, data: responseData } = await signup({
       email: data.email,
       name: data.name,
       password: data.password,
@@ -53,6 +56,8 @@ const SignupPage = () => {
       return;
     }
 
+    dispatch(setUser(responseData!.data));
+
     toast.success('Account created');
     navigate({ to: '/' });
   };
@@ -60,11 +65,11 @@ const SignupPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-6 md:justify-start md:pl-50">
       <div className="p-6 w-full max-w-112.5 bg-white rounded-xl flex flex-col gap-11">
-        <div className="inline-flex items-center gap-1.5">
+        <div className="inline-flex  items-center gap-1.5">
           <FileText className="size-8 text-primary" />
           <span className="text-primary text-3xl font-medium leading-8">Neoposts</span>
         </div>
-        <form className="self-stretch flex flex-col gap-6" onSubmit={handleSubmit(onSubmitSignup)}>
+        <form className="self-stretch flex flex-col  gap-6" onSubmit={handleSubmit(onSubmitSignup)}>
           <FormField type="text" placeholder="Name" error={errors.name?.message} {...register('name')} />
           <FormField type="email" placeholder="Email" error={errors.email?.message} {...register('email')} />
           <FormField type="password" placeholder="Password" error={errors.password?.message} {...register('password')} />
@@ -90,6 +95,6 @@ const SignupPage = () => {
   );
 }
 
-export const Route = createFileRoute('/signup')({
+export const Route = createFileRoute('/_auth/signup')({
   component: SignupPage,
 });

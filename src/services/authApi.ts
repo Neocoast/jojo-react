@@ -1,5 +1,5 @@
 import { api } from './api';
-import type { LoginPayload, LoginResponse, SignupPayload, SignupResponse } from './auth.interfaces';
+import type { LoginPayload, LoginResponse, MeResponse, SignupPayload, SignupResponse } from './auth.interfaces';
 
 export type { SignupPayload, SignupResponse };
 
@@ -38,7 +38,18 @@ export const authApi = api.injectEndpoints({
         responseHandler: saveAuthTokensAndParse,
       }),
     }),
+
+    getMe: builder.query<MeResponse, void>({
+      query: () => '/users/me',
+    }),
+
+    signOut: builder.mutation<void, void>({
+      query: () => ({
+        url: '/users/sign_out',
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useSignupMutation, useLoginMutation } = authApi;
+export const { useSignupMutation, useLoginMutation, useGetMeQuery, useSignOutMutation } = authApi;

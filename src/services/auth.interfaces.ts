@@ -25,3 +25,20 @@ export interface LoginResponse {
     name: string;
   }
 }
+
+export type User = LoginResponse['data'];
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  user: User | null;
+}
+
+export interface MeResponse {
+  id: number;
+  name: string;
+  email: string;
+  favorite_tags: { id: number; slug: string }[];
+  followed: boolean;
+  followers: MeResponse[];
+  followees: MeResponse[];
+}
