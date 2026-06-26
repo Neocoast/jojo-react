@@ -8,6 +8,7 @@ import { logoutUser } from '@/services/authSlice';
 import { useGetMeQuery, useSignOutMutation } from '@/services/authApi';
 import { NavButton } from '@/components/NavButton';
 import { UserStat } from '@/components/UserStat';
+import { Avatar } from '@/components/Avatar';
 import { cn } from '@/lib/utils';
 
 const ROUTES = {
@@ -42,13 +43,19 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         )}
       >
         <div className="bg-white rounded-xl overflow-hidden shadow-sm">
-          <div className="relative h-36 bg-primary/10 flex items-center justify-center">
-            <span className="text-4xl font-semibold text-primary">
-              {user?.name?.charAt(0).toUpperCase()}
-            </span>
-            <div className="absolute bottom-0 left-0 right-0 p-3">
-              <p className="font-semibold text-sm">{user?.name}</p>
-              <p className="text-muted-foreground text-xs">{user?.email}</p>
+          <div className="relative overflow-hidden w-full h-39.5">
+            {user && (
+              <Avatar
+                name={user.name}
+                size="100%"
+                className="absolute inset-0 h-full w-full"
+                preserveAspectRatio="none"
+              />
+            )}
+
+            <div className="absolute bottom-0 left-0 right-0 p-3 bg-linear-to-t from-black/50">
+              <p className="font-semibold text-sm text-white">{user?.name}</p>
+              <p className="text-white/80 text-xs">{user?.email}</p>
             </div>
           </div>
           <div className='flex m-4'>
