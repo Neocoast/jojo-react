@@ -13,3 +13,15 @@ export interface SignupResponse {
     name: string;
   }
 }
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  data: {
+    id: number;
+    email: string;
+    name: string;
+  }
+}
