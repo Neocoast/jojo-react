@@ -12,3 +12,6 @@ export const store = configureStore({
       serializableCheck: false,
     }).concat(api.middleware),
 });
+
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;

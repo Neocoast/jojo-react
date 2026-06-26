@@ -11,9 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as ProtectedIndexRouteImport } from './routes/_protected.index'
-import { Route as AuthSignupRouteImport } from './routes/_auth.signup'
-import { Route as AuthLoginRouteImport } from './routes/_auth.login'
+import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
+import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',

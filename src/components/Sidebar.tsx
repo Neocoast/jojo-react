@@ -1,8 +1,10 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { Home, UserPlus, Heart, LogOut } from 'lucide-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { logout } from '@/services/authSlice';
+import type { AppDispatch, RootState } from '@/services/store';
+
+import { logoutUser } from '@/services/authSlice';
 import { useGetMeQuery, useSignOutMutation } from '@/services/authApi';
 
 interface SidebarProps {
@@ -12,17 +14,15 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { data: user } = useGetMeQuery();
+  const dispatch = useDispatch<AppDispatch>();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const { data: user } = useGetMeQuery(undefined, { skip: !isAuthenticated });
   const [signOut] = useSignOutMutation();
 
   const handleLogout = async () => {
     await signOut();
-    localStorage.removeItem('access-token');
-    localStorage.removeItem('uid');
-    localStorage.removeItem('client');
-    localStorage.removeItem('expiry');
-    dispatch(logout());
+
+    dispatch(logoutUser());
     navigate({ to: '/login' });
   };
 

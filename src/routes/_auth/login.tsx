@@ -45,7 +45,6 @@ const LoginPage = () => {
 
     dispatch(setUser(responseData!.data));
 
-
     toast.success('Logged in');
     navigate({ to: '/' });
   }

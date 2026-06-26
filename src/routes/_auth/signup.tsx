@@ -65,11 +65,11 @@ const SignupPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-6 md:justify-start md:pl-50">
       <div className="p-6 w-full max-w-112.5 bg-white rounded-xl flex flex-col gap-11">
-        <div className="inline-flex  items-center gap-1.5">
+        <div className="inline-flex items-center gap-1.5">
           <FileText className="size-8 text-primary" />
           <span className="text-primary text-3xl font-medium leading-8">Neoposts</span>
         </div>
-        <form className="self-stretch flex flex-col  gap-6" onSubmit={handleSubmit(onSubmitSignup)}>
+        <form className="self-stretch flex flex-col gap-6" onSubmit={handleSubmit(onSubmitSignup)}>
           <FormField type="text" placeholder="Name" error={errors.name?.message} {...register('name')} />
           <FormField type="email" placeholder="Email" error={errors.email?.message} {...register('email')} />
           <FormField type="password" placeholder="Password" error={errors.password?.message} {...register('password')} />

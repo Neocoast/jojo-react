@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import type { Dispatch } from 'redux';
 
 import type { AuthState, User } from './auth.interfaces';
 
@@ -24,4 +25,13 @@ const authSlice = createSlice({
 });
 
 export const { setUser, logout } = authSlice.actions;
+
+export const logoutUser = () => (dispatch: Dispatch) => {
+  localStorage.removeItem('access-token');
+  localStorage.removeItem('uid');
+  localStorage.removeItem('client');
+  localStorage.removeItem('expiry');
+  dispatch(logout());
+};
+
 export default authSlice.reducer;
