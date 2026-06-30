@@ -10,7 +10,10 @@ interface AvatarProps {
 }
 
 const Avatar = ({
-  name, size = 40, className, preserveAspectRatio,
+  name,
+  size = 40,
+  className,
+  preserveAspectRatio,
 }: AvatarProps) => (
   <BoringAvatar
     name={name}
