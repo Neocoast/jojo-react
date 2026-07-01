@@ -1,4 +1,4 @@
-import { Link, useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { Home, UserPlus, Heart, LogOut } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,6 +6,13 @@ import type { AppDispatch, RootState } from '@/services/store';
 
 import { logoutUser } from '@/services/authSlice';
 import { useGetMeQuery, useSignOutMutation } from '@/services/authApi';
+import { NavButton } from '@/components/NavButton';
+import { UserStat } from '@/components/UserStat';
+import { cn } from '@/lib/utils';
+
+const ROUTES = {
+  login: '/login',
+} as const;
 
 interface SidebarProps {
   isOpen: boolean;
@@ -23,12 +30,17 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     await signOut();
 
     dispatch(logoutUser());
-    navigate({ to: '/login' });
+    navigate({ to: ROUTES.login });
   };
 
   return (
-    <>
-      <div className={`flex flex-col gap-4 w-64 shrink-0 fixed inset-y-0 left-0 z-30 pt-4 px-4 bg-transparent transition-transform md:relative md:translate-x-0 md:pt-0 md:px-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div
+        className={cn(
+          'flex flex-col gap-4 w-64 shrink-0 fixed inset-y-0 left-0 z-30 pt-4 px-4 bg-transparent transition-transform',
+          'md:relative md:translate-x-0 md:pt-0 md:px-0',
+          isOpen ? 'translate-x-0' : '-translate-x-full',
+        )}
+      >
         <div className="bg-white rounded-xl overflow-hidden shadow-sm">
           <div className="relative h-36 bg-primary/10 flex items-center justify-center">
             <span className="text-4xl font-semibold text-primary">
@@ -40,37 +52,18 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             </div>
           </div>
           <div className='flex m-4'>
-            <div className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-xs font-semibold tracking-widest text-muted-foreground">FOLLOWING</span>
-              <span className="text-primary font-semibold">{user?.followees.length ?? 0}</span>
-            </div>
-            <div className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-xs font-semibold tracking-widest text-muted-foreground">FOLLOWERS</span>
-              <span className="text-primary font-semibold">{user?.followers.length ?? 0}</span>
-            </div>
+            <UserStat label="FOLLOWING" count={user?.followees.length ?? 0} />
+            <UserStat label="FOLLOWERS" count={user?.followers.length ?? 0} />
           </div>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm p-2 flex flex-col">
-          <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm hover:bg-accent [&.active]:bg-accent">
-            <Home className="size-4" />
-            Home
-          </Link>
-          <button className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm hover:bg-accent text-left">
-            <UserPlus className="size-4" />
-            Friends
-          </button>
-          <button className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm hover:bg-accent text-left">
-            <Heart className="size-4" />
-            Likes
-          </button>
-          <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm hover:bg-accent text-left">
-            <LogOut className="size-4" />
-            Log Out
-          </button>
+          <NavButton icon={Home} label="Home" link="/" />
+          <NavButton icon={UserPlus} label="Friends" />
+          <NavButton icon={Heart} label="Likes" />
+          <NavButton icon={LogOut} label="Log Out" onClick={handleLogout} />
         </div>
       </div>
-    </>
   );
 };
 
