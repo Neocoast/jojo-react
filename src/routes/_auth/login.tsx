@@ -3,21 +3,23 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { FileText } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components/ui/button';
 import { FormField } from '@/components/ui/form-field';
 import { useLoginMutation } from '@/services/authApi';
+import { setUser } from '@/services/authSlice';
 import { loginSchema, type LoginFormData } from '@/validations/login';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
   const {
       register,
       handleSubmit,
       resetField,
-      setError,
       watch,
       formState: { errors },
     } = useForm<LoginFormData>({
@@ -30,16 +32,18 @@ const LoginPage = () => {
   const hasErrors = Object.keys(errors).length > 0;
 
   const onSubmitLogin = async (data: LoginFormData) => {
-    const { error } = await login ({
+    const { error, data: responseData } = await login({
       email: data.email,
       password: data.password,
-    })
+    });
 
     if (error) {
       resetField('password');
       toast.error('Something went wrong. Please try again.');
       return;
     }
+
+    dispatch(setUser(responseData!.data));
 
     toast.success('Logged in');
     navigate({ to: '/' });
@@ -65,6 +69,6 @@ const LoginPage = () => {
   );
 }
 
-export const Route = createFileRoute('/login')({
+export const Route = createFileRoute('/_auth/login')({
   component: LoginPage,
 })

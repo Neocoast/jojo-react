@@ -1,18 +1,15 @@
-import { createRootRoute, Outlet, Link } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { Toaster } from 'react-hot-toast'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { Toaster } from 'react-hot-toast';
 
-export const Route = createRootRoute({
+import type { RouterContext } from '@/router';
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
-    <div className="bg-with-dots bg-cover min-h-full bg-center">
+    <div className="min-h-screen">
       <Toaster />
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Signup</Link>
-      </nav>
       <Outlet />
       <TanStackRouterDevtools />
     </div>
   ),
-})
+});

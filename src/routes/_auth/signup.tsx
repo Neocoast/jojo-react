@@ -4,16 +4,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FileText } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components/ui/button';
 import { FormField } from '@/components/ui/form-field';
 import { TagsCombobox } from '@/components/ui/combobox';
 import { useSignupMutation } from '@/services/authApi';
+import { setUser } from '@/services/authSlice';
 import { useGetTagsQuery } from '@/services/tagsApi';
 import { signupSchema, type SignupFormData } from '@/validations/signup';
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [signup, { isLoading }] = useSignupMutation();
   const { data: tags = [] } = useGetTagsQuery();
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -34,7 +37,7 @@ const SignupPage = () => {
   const hasErrors = Object.keys(errors).length > 0;
 
   const onSubmitSignup = async (data: SignupFormData) => {
-    const { error } = await signup({
+    const { error, data: responseData } = await signup({
       email: data.email,
       name: data.name,
       password: data.password,
@@ -52,6 +55,8 @@ const SignupPage = () => {
       }
       return;
     }
+
+    dispatch(setUser(responseData!.data));
 
     toast.success('Account created');
     navigate({ to: '/' });
@@ -90,6 +95,6 @@ const SignupPage = () => {
   );
 }
 
-export const Route = createFileRoute('/signup')({
+export const Route = createFileRoute('/_auth/signup')({
   component: SignupPage,
 });
