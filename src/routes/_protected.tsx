@@ -3,6 +3,7 @@ import { createFileRoute, redirect, Outlet } from '@tanstack/react-router';
 
 import { Navbar } from '@/components/Navbar';
 import { Sidebar } from '@/components/Sidebar';
+import { TrendingTopics } from '@/components/TrendingTopics';
 
 const ProtectedLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -15,6 +16,9 @@ const ProtectedLayout = () => {
         <main className="flex-1">
           <Outlet />
         </main>
+        <aside className="w-80 shrink-0 self-start rounded-xl bg-white p-6">
+          <TrendingTopics />
+        </aside>
       </div>
     </div>
   );
