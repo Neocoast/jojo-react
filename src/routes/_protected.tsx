@@ -12,7 +12,7 @@ const ProtectedLayout = () => {
       <Navbar onToggleSidebar={() => setIsSidebarOpen((currentState) => !currentState)} />
       <div className="flex flex-1 gap-6 p-6">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-        <main className="flex-1">
+        <main className="flex-1 min-w-0">
           <Outlet />
         </main>
       </div>

@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Dispatch } from 'redux';
 
 import type { AuthState, User } from './auth.interfaces';
+import { api } from './api';
 
 const initialState: AuthState = {
   isAuthenticated: !!localStorage.getItem('access-token'),
@@ -32,6 +33,8 @@ export const logoutUser = () => (dispatch: Dispatch) => {
   localStorage.removeItem('client');
   localStorage.removeItem('expiry');
   dispatch(logout());
+  // Vaciamos el caché de RTK Query para no mostrarle datos de esta cuenta al próximo usuario
+  dispatch(api.util.resetApiState());
 };
 
 export default authSlice.reducer;

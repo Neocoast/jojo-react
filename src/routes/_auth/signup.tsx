@@ -75,7 +75,7 @@ const SignupPage = () => {
           <FormField type="password" placeholder="Password" error={errors.password?.message} {...register('password')} />
           <FormField type="password" placeholder="Password Confirmation" error={errors.password_confirmation?.message} {...register('password_confirmation')} />
 
-          <TagsCombobox items={tags.map((t) => t.slug)} onValueChange={setSelectedTags} />
+          <TagsCombobox items={tags.map((t) => t.slug)} value={selectedTags} onValueChange={setSelectedTags} />
 
           <Button type="submit" disabled={isLoading || !isFormFilled || hasErrors} className="w-full">
             {isLoading ? 'Creating account...' : 'Sign Up'}

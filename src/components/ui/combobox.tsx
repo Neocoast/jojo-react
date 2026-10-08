@@ -148,14 +148,16 @@ const useComboboxAnchor = () => React.useRef<HTMLDivElement | null>(null);
 
 interface TagsComboboxProps {
   items: string[];
+  value: string[];
   onValueChange: (values: string[]) => void;
+  placeholder?: string;
 }
 
-const TagsCombobox = ({ items, onValueChange }: TagsComboboxProps) => {
+const TagsCombobox = ({ items, value, onValueChange, placeholder = 'Select tags' }: TagsComboboxProps) => {
   const anchor = useComboboxAnchor();
 
   return (
-    <Combobox multiple autoHighlight items={items} onValueChange={onValueChange}>
+    <Combobox multiple autoHighlight items={items} value={value} onValueChange={onValueChange}>
       <ComboboxChips ref={anchor} className="w-full rounded-md px-3 py-2.5 min-h-0">
         <ComboboxValue>
           {(values: string[]) => (
@@ -163,7 +165,7 @@ const TagsCombobox = ({ items, onValueChange }: TagsComboboxProps) => {
               {values.map((value) => (
                 <ComboboxChip key={value}>{value}</ComboboxChip>
               ))}
-              <ComboboxChipsInput placeholder={values.length === 0 ? 'Select tags' : ''} />
+              <ComboboxChipsInput placeholder={values.length === 0 ? placeholder : ''} />
             </>
           )}
         </ComboboxValue>
