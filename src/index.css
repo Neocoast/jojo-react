@@ -7,6 +7,7 @@
 
  @theme inline {
    --font-heading: var(--font-sans);
+   --animate-toast-progress: toast-progress linear forwards;
    --font-sans: 'Geist Variable', sans-serif;
    --color-sidebar-ring: var(--sidebar-ring);
    --color-sidebar-border: var(--sidebar-border);
@@ -134,3 +135,13 @@
      @apply font-sans;
    }
  }
+
+/* Barra del toast: crece de 0 a todo el ancho */
+@keyframes toast-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

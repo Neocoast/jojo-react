@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const emailField = z.string().min(1, 'Email is required').email('Invalid email format');
+const emailField = z.string().min(1, 'Email is required').pipe(z.email('Invalid email format'));
 
 export const loginSchema = z
   .object({
@@ -9,3 +9,4 @@ export const loginSchema = z
   });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
+
