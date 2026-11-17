@@ -66,7 +66,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
         <div className="bg-white rounded-xl shadow-sm p-2 flex flex-col">
           <NavButton icon={Home} label="Home" link="/" />
-          <NavButton icon={UserPlus} label="Friends" />
+          <NavButton icon={UserPlus} label="Friends" link="/users" />
           <NavButton icon={Heart} label="Likes" />
           <NavButton icon={LogOut} label="Log Out" onClick={handleLogout} />
         </div>
