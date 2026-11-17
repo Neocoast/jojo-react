@@ -10,6 +10,9 @@ import { NavButton } from '@/components/NavButton';
 import { UserStat } from '@/components/UserStat';
 import { Avatar } from '@/components/Avatar';
 import { cn } from '@/lib/utils';
+import { LogoutModal } from './LogoutModal';
+import { FullPageLoader } from '@/components/FullPageLoader';
+import { useState } from 'react';
 
 const ROUTES = {
   login: '/login',
@@ -25,9 +28,13 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const { data: user } = useGetMeQuery(undefined, { skip: !isAuthenticated });
-  const [signOut] = useSignOutMutation();
+  const [signOut, { isLoading: isSigningOut }] = useSignOutMutation();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+
 
   const handleLogout = async () => {
+    setIsLogoutModalOpen(false);
     await signOut();
 
     dispatch(logoutUser());
@@ -68,8 +75,15 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <NavButton icon={Home} label="Home" link="/" />
           <NavButton icon={UserPlus} label="Friends" />
           <NavButton icon={Heart} label="Likes" />
-          <NavButton icon={LogOut} label="Log Out" onClick={handleLogout} />
+          <NavButton icon={LogOut} label="Log Out" onClick={() => setIsLogoutModalOpen(true)} />
         </div>
+
+        <LogoutModal
+          open={isLogoutModalOpen}
+          onOpenChange={setIsLogoutModalOpen}
+          onConfirm={handleLogout}
+        />
+        {isSigningOut && <FullPageLoader />}
       </div>
   );
 };
