@@ -31,6 +31,7 @@ export const logoutUser = () => (dispatch: Dispatch) => {
   localStorage.removeItem('uid');
   localStorage.removeItem('client');
   localStorage.removeItem('expiry');
+  localStorage.removeItem('trending-topics');
   dispatch(logout());
 };
 

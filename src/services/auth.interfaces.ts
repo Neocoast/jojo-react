@@ -37,7 +37,7 @@ export interface MeResponse {
   id: number;
   name: string;
   email: string;
-  favorite_tags: { id: number; slug: string }[];
+  favoriteTags: { id: number; slug: string }[];
   followed: boolean;
   followers: MeResponse[];
   followees: MeResponse[];
