@@ -69,6 +69,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <NavButton icon={UserPlus} label="Friends" />
           <NavButton icon={Heart} label="Likes" />
           <NavButton icon={LogOut} label="Log Out" onClick={handleLogout} />
+          <NavButton icon={UserPlus} label="Friends" link="/users" />
         </div>
       </div>
   );
