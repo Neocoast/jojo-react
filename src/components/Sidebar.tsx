@@ -1,14 +1,15 @@
+import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Home, UserPlus, Heart, LogOut } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import type { AppDispatch, RootState } from '@/services/store';
+import type { RootState } from '@/services/store';
 
-import { logoutUser } from '@/services/authSlice';
 import { useGetMeQuery, useSignOutMutation } from '@/services/authApi';
+import { Avatar } from '@/components/Avatar';
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { NavButton } from '@/components/NavButton';
 import { UserStat } from '@/components/UserStat';
-import { Avatar } from '@/components/Avatar';
 import { cn } from '@/lib/utils';
 
 const ROUTES = {
@@ -22,15 +23,13 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const { data: user } = useGetMeQuery(undefined, { skip: !isAuthenticated });
-  const [signOut] = useSignOutMutation();
+  const [signOut, { isLoading: isSigningOut }] = useSignOutMutation();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const handleLogout = async () => {
     await signOut();
-
-    dispatch(logoutUser());
     navigate({ to: ROUTES.login });
   };
 
@@ -68,8 +67,18 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <NavButton icon={Home} label="Home" link="/" />
           <NavButton icon={UserPlus} label="Friends" />
           <NavButton icon={Heart} label="Likes" />
-          <NavButton icon={LogOut} label="Log Out" onClick={handleLogout} />
+          <NavButton icon={LogOut} label="Log Out" onClick={() => setIsLogoutModalOpen(true)} />
         </div>
+
+        <ConfirmationModal
+          open={isLogoutModalOpen}
+          onOpenChange={setIsLogoutModalOpen}
+          onConfirm={handleLogout}
+          title="Log out of your account?"
+          description="Your session will end on this device."
+          confirmLabel="Log Out"
+          isLoading={isSigningOut}
+        />
       </div>
   );
 };

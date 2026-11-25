@@ -1,4 +1,5 @@
 import { api } from './api';
+import { logoutUser } from './authSlice';
 import type { LoginPayload, LoginResponse, MeResponse, SignupPayload, SignupResponse } from './auth.interfaces';
 
 export type { SignupPayload, SignupResponse };
@@ -48,6 +49,16 @@ export const authApi = api.injectEndpoints({
         url: '/users/sign_out',
         method: 'DELETE',
       }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch {
+          // Even if the request fails, we still clear the session locally
+        } finally {
+          dispatch(logoutUser());
+          dispatch(api.util.resetApiState());
+        }
+      },
     }),
   }),
 });
